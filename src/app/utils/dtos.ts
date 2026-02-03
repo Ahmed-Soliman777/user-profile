@@ -18,3 +18,13 @@ export interface UpdateUserDTO {
   Password?: string;
   Image?: string;
 }
+
+export interface CreatePostDTO {
+  TextContent?: string;
+  Files?: string[];
+}
+
+export interface UpdatePostDTO {
+  TextContent?: string;
+  Files?: string[];
+}
