@@ -41,7 +41,7 @@ const LoginForm = () => {
                 const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/users/login`, { Email: formData.Email, Password: formData.Password })
                 toast.success(`${data.message}`)
                 setLoading(false)
-                router.replace("/")
+                router.replace("/profile")
             } catch (error) {
                 console.error(error);
                 toast.error("An error occured, please try again!")

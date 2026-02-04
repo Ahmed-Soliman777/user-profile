@@ -76,10 +76,10 @@ const RegisterForm = () => {
                 })
                 toast.success(`${data.message}`)
                 setLoading(false)
-                route.replace("/")
+                route.replace("/profile")
             } catch (error) {
                 console.error(error);
-                toast.error("An error occured, please try again!")
+                toast.error(`"An error occured, please try again!"`)
                 setLoading(false)
             }
         }
