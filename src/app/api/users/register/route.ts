@@ -44,12 +44,14 @@ export async function POST(request: NextRequest) {
         LastName: body.LastName,
         Password: hashedPassword,
         Email: body.Email,
+        Image: body.Image,
       },
       select: {
         id: true,
         FirstName: true,
         LastName: true,
         Email: true,
+        Image: true,
       },
     });
 
