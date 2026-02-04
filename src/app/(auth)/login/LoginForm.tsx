@@ -110,6 +110,9 @@ const LoginForm = () => {
                 <p className="text-center text-sm text-gray-600">
                     New to MODBOOK? <Link href="/register" className="text-indigo-600 font-medium hover:underline">Create a new account</Link>
                 </p>
+                <p className="text-center text-sm text-gray-600">
+                    Forgot Password? <Link href="/forget-password" className="text-indigo-600 font-medium hover:underline">Reset it here</Link>
+                </p>
             </form>
         </div>
     )
