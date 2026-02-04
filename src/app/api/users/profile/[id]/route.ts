@@ -21,6 +21,7 @@ export async function GET(request: NextRequest, props: RouteProps) {
         id: true,
         FirstName: true,
         LastName: true,
+        Email: true,
         CreateAt: true,
         Image: true,
         Posts: true,
