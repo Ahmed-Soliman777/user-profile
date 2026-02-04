@@ -14,7 +14,7 @@ const RegisterForm = () => {
     const [loading, setLoading] = useState<boolean>(false)
     const [error, setError] = useState<RegisterFormType>({})
 
-    const [formData, setFormData] = useState<RegisterFormType>({ FirstName: "", LastName: "", Email: "", Password: "", ConfirmPassword: "", Image: "" })
+    const [formData, setFormData] = useState<RegisterFormType>({ FirstName: "", LastName: "", Email: "", Password: "", ConfirmPassword: "", Image: undefined })
 
     function validation() {
 
@@ -35,23 +35,44 @@ const RegisterForm = () => {
         return Object.keys(newErrors).length === 0
     }
 
+    async function uploadImageToCloudinary(file: File) {
+        const formImageData = new FormData();
+        formImageData.append("file", file);
+        formImageData.append("upload_preset", process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET as string);
+
+        const { data } = await axios.post(
+            `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME}/image/upload`,
+            formImageData
+        )
+        return data.secure_url
+    }
+
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-        setFormData({ ...formData, [e.target.name]: e.target.value })
+        const { name, value, files } = e.target;
+
+        if (name === 'Image' && files && files[0]) {
+            setFormData((prev) => ({ ...prev, Image: files[0] }));
+        } else {
+            setFormData((prev) => ({ ...prev, [name]: value }));
+        }
     }
 
     const handleFormSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
 
         if (validation()) {
-            // console.log(formData);
             try {
                 setLoading(true)
+                let imageURL = ""
+                if (formData.Image && formData.Image instanceof File) {
+                    imageURL = await uploadImageToCloudinary(formData.Image)
+                }
                 const { data } = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}api/users/register`, {
                     FirstName: formData.FirstName,
                     LastName: formData.LastName,
                     Email: formData.Email,
                     Password: formData.Password,
-                    Image: formData.Image,
+                    Image: imageURL,
                 })
                 toast.success(`${data.message}`)
                 setLoading(false)
@@ -164,7 +185,16 @@ const RegisterForm = () => {
                         )}
                     </div>
 
-                    {/* TODO: create image input file and upload image to cloudinary to make it avaliable global */}
+                    <div className="space-y-1">
+                        <label className="text-sm font-semibold text-gray-600">Add Image</label>
+                        <input
+                            type="file"
+                            // className="w-full rounded-lg border border-gray-300 px-4 py-2.5 focus:ring-2 focus:ring-indigo-500 focus:outline-none transition-all"
+                            placeholder="Add profile pic"
+                            name='Image'
+                            onChange={handleChange}
+                        />
+                    </div>
 
                     <button
                         type="submit"
