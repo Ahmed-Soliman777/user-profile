@@ -53,7 +53,7 @@ export const UpdateUserSchema = z.object({
 });
 
 export const CreatePost = z.object({
-  TextContent: z.string().min(1).optional(),
+  TextContent: z.string().optional(),
   Files: z.array(z.string()).optional(),
 });
 
