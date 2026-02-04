@@ -6,3 +6,17 @@ export interface JWTPayload {
 export interface RouteProps {
   params: { id: string };
 }
+
+export interface RegisterFormType {
+  FirstName?: string;
+  LastName?: string;
+  Email?: string;
+  Password?: string;
+  ConfirmPassword?: string;
+  Image?: string;
+}
+
+export interface LoginFormType {
+  Email?: string;
+  Password?: string;
+}
