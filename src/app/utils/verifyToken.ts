@@ -20,3 +20,20 @@ export function VerifyToken(request: NextRequest): JWTPayload | null {
     return null;
   }
 }
+
+export function verifyTokenForPage(token: string): JWTPayload | null {
+  try {
+    const userPayload = jwt.verify(
+      token,
+      process.env.JWT_SECRET as string,
+    ) as JWTPayload;
+
+    if (!userPayload) {
+      return null;
+    }
+
+    return userPayload;
+  } catch (error) {
+    return null;
+  }
+}
