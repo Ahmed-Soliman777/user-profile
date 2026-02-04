@@ -13,7 +13,7 @@ export interface RegisterFormType {
   Email?: string;
   Password?: string;
   ConfirmPassword?: string;
-  Image?: string;
+  Image?: File;
 }
 
 export interface LoginFormType {
