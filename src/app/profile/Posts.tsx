@@ -1,7 +1,6 @@
 "use client";
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import PostCard from './PostCard';
 import UpdatePost from './UpdatePost';
 import Loading from '../loading';
@@ -31,23 +30,34 @@ const Posts = ({ userId, userInfo }: PostsProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [editingPost, setEditingPost] = useState<Post | null>(null);
 
-
   async function fetchPosts() {
     try {
       setLoading(true);
       const { data } = await axios.get(
-        `${process.env.NEXT_PUBLIC_API_URL}api/posts`
+        `${process.env.NEXT_PUBLIC_API_URL}api/posts`,
+        {
+          withCredentials: true
+        }
       );
       setPosts(data.posts || []);
       setLoading(false);
     } catch (error) {
+      if (axios.isAxiosError(error)) {
+        if (error.response?.status === 403) {
+          setPosts([]);
+          return;
+        }
+      }
+
       console.error(error);
-      toast.error("Failed to load posts");
-      setLoading(false);
     }
   }
 
   useEffect(() => {
+    if (!userId) {
+      return;
+    }
+
     fetchPosts();
   }, [userId]);
 
